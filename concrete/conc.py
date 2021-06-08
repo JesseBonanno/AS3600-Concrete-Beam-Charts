@@ -36,7 +36,8 @@ class Concrete:
             but the value can be overrided by specifying an int here,
             by default None
         """
-
+        
+        # initialise parameters
         self.D = D
         self.b = b
         self.cover = cover
@@ -46,16 +47,20 @@ class Concrete:
         self.ductility = ductility
         self.fsy = fsy
         
+        # if d is set than use d, else calculate
         if d:
             self.d = d
         else:
             self.d = D - cover - diameter/2
 
+        # calculate concrete fctf
         self.fctf = 0.6*(fc**0.5)
 
+        # calculate area of steel in mm2 for the full width
         A_bar = floor(diameter**2 * pi /4)
         self.Ast = A_bar * (b / spacing)
 
+        # calculate concrete stress block parameters
         self.a2 = max(0.85-0.0015*fc,0.67)
         self.gamma = max(0.97-0.0025*fc,0.67)
 
@@ -68,13 +73,22 @@ class Concrete:
         Bending Capacity, int
             Bending capacity in kN.m, considers phi.
         """
+        # initialise some parameters to be easier to refer to
         a2, gamma = self.a2, self.gamma
         fc, Ast, fsy = self.fc, self.Ast, self.fsy
         b,d = self.b, self.d
+
+        # calculate dn
         dn = (Ast * fsy) / (a2*fc*b*gamma)
+
+        #calculate ku
         ku = dn / d
+
+        # calculate moment capacity (without reduction factor)
+        # change into kN.m
         Muo = (Ast * fsy) * (d - 0.5*gamma*ku*d) /(10**6)
 
+        # use ductility class to determine phi (AS3600)
         if self.ductility in ['l','L']:
             phi = 0.65
         elif self.ductility in ['n','N']:
@@ -93,12 +107,22 @@ class Concrete:
         Shear Capacity, int
             Shear capacity in kN, considers phi.
         """
+        #initialise some parameters to be shorter to refer to
+        d, D, b, fc = self.d, self.D, self.b, self.fc
+
+        # define phi
         phi = 0.75
-        dv = max(0.72 * self.D, 0.9 * self.d)
-        bv = self.b
+
+        # calcualte parameters needed for shear capacity calculation
+        # Note thetav and kv simplified
+        dv = max(0.72 * D, 0.9 * d)
+        bv = b
         thetav = 36
         kv = min(0.1, 200/(1000+1.3*dv))
-        Vuc = kv * bv * dv * min(8, self.fc**0.5) / 1000
+
+        # calculate shear capacity (without reduction factor)
+        # change into kN
+        Vuc = kv * bv * dv * min(8, fc**0.5) / 1000
 
         # return design shear capacity in kN
         return Vuc * phi
@@ -121,38 +145,51 @@ class Concrete:
             Minimum steel for deemed to comply crack control 
             and minimum bending capacity requirements (mm2/m)
         """
-        # f is the factor for different members
-        # 0.19 for 2 way slab
-        # 0.2 for 1 way slab
-        # 0.24 for flat slab (supported by columns)
+        # calculate minimum steel for deemed to comply crack control and minimum
+        # bending strength in accordance with AS3600 8.1.6.1, 9.1.1, 8.6.1, 9.5.1
         A_min = self.b * self.d * f * (self.D/self.d)**2 * self.fctf/self.fsy
         return A_min
 
 
 
 if __name__ == "__main__":
-    # loop through depths at 10 mm increments
+    # intialise and empty plotly plot
     fig = px.line()
 
-    x, y = {}, {}
-    for cover in range(20,80,5):
-        x[cover] = []
-        y[cover] = []
-        for D in range(60,750,10):
-            conc = Concrete(D = D, fc = 32, ductility='N', cover = cover, diameter = 10)
-            y[cover].append(conc.deemed())
-            x[cover].append(conc.D)
+    # outer loop will represent each line on graph
+    for fc in [50,40,32,20]:
+        # intilize empty and x and y array to represent data for lines
+        x = []
+        y = []
+        # inner loop will represent all the points on a line
+        for D in range(30,500,20):
+            # create conc class with parameters based on loops and other requirements
+            conc = Concrete(D = D, fc = fc)
 
-        fig.add_trace(go.Scatter(x=x[cover],y=y[cover], name = str("d = D - "+ str(cover+5))))
+            # initialise y to be a value created off of the conc class
+            # can be conc.deemed(), conc.shear() or conc.bending()
+            y.append(conc.bending())
 
+            # intilise x value to be a representation of the inner loop value, either
+            # setting it to be the loop value or a related proportional value
+            x.append(conc.d)
+        
+        # add line with the following code, name will be the name displayed in the legend
+        # for the line and should be appropriate defined in relation to the outer loop
+        fig.add_trace(go.Scatter(x=x,y=y, name = str(fc) + " MPa"))
+
+    # update title and axes titles for the graph
     fig.update_layout(
-            title={'text': "Deemed to comply (where fc = 32 MPa)", 'x': 0.5},
+            title={'text': "SL81 at varying depth", 'x': 0.5},
             title_font_size=24,
             showlegend=True,
             hovermode='x')
-    fig.update_xaxes(title_text='Depth, D (mm)')
-    fig.update_yaxes(title_text='Min Ast (mm2/m))')
+    fig.update_xaxes(title_text='d (mm)')
+    fig.update_yaxes(title_text='Moment Capacity (kN.m)')
 
+    # show graph
     fig.show()
-    fig.write_image("./deemed_f32.png")
-    fig.write_html("./deemed_f32.html")
+    
+    # save graph (optional)
+    # fig.write_image("./SL81_Bending.png")
+    # fig.write_html("./SL81_Bending.html")

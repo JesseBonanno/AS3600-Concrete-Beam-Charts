@@ -1,8 +1,6 @@
 # AS3600-Concrete-Beam-Charts
- Generator for concrete beam charts as well as predefined charts
 
-[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/graphs.ipynb)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/JesseBonanno/AS3600-Concrete-Beam-Charts/main?filepath=graphs.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/JesseBonanno/AS3600-Concrete-Beam-Charts/main?filepath=concrete/graphs.ipynb)
 
 ## Project Purpose
 

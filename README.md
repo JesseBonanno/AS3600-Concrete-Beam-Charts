@@ -4,8 +4,6 @@
 [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/graphs.ipynb)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/JesseBonanno/AS3600-Concrete-Beam-Charts/main?filepath=graphs.ipynb)
 
-Fix links
-
 ## Project Purpose
 
 Help with quick sanity checks for bending and shear capacity for concrete beams.
@@ -14,11 +12,11 @@ Not to provide a comprehensive and complete design but rather to guide in the ra
 
 ## Charts
 
-![example_1](https://github.com/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/charts/Shear.png)
-![example_2](https://github.com/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/charts/SL81_Bending.png)
-![example_3](https://github.com/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/charts/var_d_Ast_N.png)
-![example_4](https://github.com/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/charts/deemed_f32.png)
-![example_5](https://github.com/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/charts/deemed_45.png)
+![example_1](https://github.com/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/Charts/Shear.png)
+![example_2](https://github.com/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/Charts/SL81_Bending.png)
+![example_3](https://github.com/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/Charts/var_d_Ast_N.png)
+![example_4](https://github.com/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/Charts/deemed_f32.png)
+![example_5](https://github.com/JesseBonanno/AS3600-Concrete-Beam-Charts/blob/main/Charts/deemed_45.png)
 
 ## Functionality and Usage
 

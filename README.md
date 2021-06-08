@@ -1,5 +1,6 @@
 # AS3600-Concrete-Beam-Charts
 
+[![CodeFactor](https://www.codefactor.io/repository/github/jessebonanno/as3600-concrete-beam-charts/badge)](https://www.codefactor.io/repository/github/jessebonanno/as3600-concrete-beam-charts)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/JesseBonanno/AS3600-Concrete-Beam-Charts/main?filepath=concrete/graphs.ipynb)
 
 ## Project Purpose

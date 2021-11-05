@@ -75,6 +75,57 @@ class Concrete:
         self.a2 = max(0.85 - 0.0015 * fc, 0.67)
         self.gamma = max(0.97 - 0.0025 * fc, 0.67)
 
+
+    def plain_concrete_bending(self):
+        """Bending capacity calculation based on beam attributes for plain concrete in accordance with AS3600 section 20, section 21.
+
+        Returns
+        -------
+        Bending Capacity, int
+            Bending capacity in kN.m, considers phi.
+        """
+        # initialise some parameters to be easier to refer to
+        D = self.D - 50 #reduce by 50 mm in accordance with AS3600 20.4.1
+        fctf = self.fctf
+        b = self.b
+
+        # define phi
+        phi = 0.6
+
+        # total tensile / compressive force
+        F = fctf * b * D/2  
+
+        # calculate moment capacity (without reduction factor)
+        # change into kN.m
+        Muo = (F * D*2/3) / (10 ** 6)
+
+        # return design bending capacity in kN.m
+        return Muo * phi
+    
+    def plain_concrete_shear(self):
+        """Shear capacity calculation based on beam attributes for plain concrete in accordance with AS3600 section 20, section 21.
+
+        Returns
+        -------
+        Shear Capacity, int
+            Shear capacity in kN, considers phi.
+        """
+
+        # calcualte parameters needed for shear capacity calculation
+        b = self.b
+        D = self.D - 50 #reduce by 50 mm in accordance with AS3600 20.4.1
+        fc = self.fc
+
+        # define phi
+        phi = 0.6
+
+        # calculate shear capacity (without reduction factor)
+        # change into kN
+        Vu = 0.15* b * D * fc**(1/3) /1000
+
+        # return design shear capacity in kN
+        return Vu * phi
+
     def bending(self):
         """Bending capacity calculation based on beam attributes.
 
@@ -109,6 +160,7 @@ class Concrete:
         # return design bending capacity in kN.m
         return Muo * phi
 
+
     def shear(self):
         """Shear capacity calculation based on beam attributes.
 
@@ -121,7 +173,7 @@ class Concrete:
         d, D, b, fc = self.d, self.D, self.b, self.fc
 
         # define phi
-        phi = 0.75
+        phi = 0.7
 
         # calcualte parameters needed for shear capacity calculation
         # Note thetav and kv simplified

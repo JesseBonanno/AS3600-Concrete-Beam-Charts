@@ -186,6 +186,15 @@ class Concrete:
         # change into kN
         Vuc = kv * bv * dv * min(8, fc ** 0.5) / 1000
 
+        # in amendment 2 there is a new factor ks that also needs to be included
+        if D <= 300:
+            ks = 1
+        elif D < 650:
+            ks = (1000-D)/700
+        else:
+            ks = 0.5
+
+        # note the upper limit of vumax in this case will not govern since kv = 0.1 
         # is less than 0.55 * (cot...) ~= 0.25 and sqrt(f'c) < f'c
 
         # return design shear capacity in kN

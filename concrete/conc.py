@@ -1,7 +1,7 @@
 # Goal - create a function / class that calculates bending moment and shear capacity
 # use function or class to generate a table for a change in d, Ast, f'c etc.
 
-from math import floor, pi
+from math import floor, pi, radians, tan
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -186,8 +186,10 @@ class Concrete:
         # change into kN
         Vuc = kv * bv * dv * min(8, fc ** 0.5) / 1000
 
+        # is less than 0.55 * (cot...) ~= 0.25 and sqrt(f'c) < f'c
+
         # return design shear capacity in kN
-        return Vuc * phi
+        return Vuc * phi * ks
 
     def deemed(self, f=0.2):
         """Deemed to comply check for crack control and minimum bending capacity.
